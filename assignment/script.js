@@ -1,0 +1,62 @@
+        empCollection = JSON.parse(localStorage.getItem("recs")) || []; //if the records are present in localStorage, load them else initialize to empty array.
+        window.addEventListener("load", function(){
+            document.getElementsByTagName("button")[0].addEventListener("click", function(){
+                const rec = {id : 45, name : "Suresh", address : "Mysore", salary : 40000 };
+                addEmployee(rec)
+                localStorage.setItem("recs", JSON.stringify(empCollection));
+                alert("Record added successfully")
+            })
+
+            document.getElementsByTagName("button")[1].addEventListener("click", function(){
+                const id = parseInt(prompt("Enter Employee ID to delete: "));
+                deleteEmployee(id);
+                localStorage.setItem("recs", JSON.stringify(empCollection));
+                alert("Record deleted successfully")
+            })
+
+            document.getElementsByTagName("button")[2].addEventListener("click", function(){
+                const id = parseInt(prompt("Enter Employee ID to update: "));
+                const rec = findEmployee(id);
+                if(rec){
+                    rec.name = "Updated Name";
+                    rec.address = "Updated Address";
+                    rec.salary = 55000;
+                    updateEmployee(rec);
+                    localStorage.setItem("recs", JSON.stringify(empCollection));
+                    alert("Record updated successfully")
+                } else {
+                    alert("Employee not found");
+                }
+            })
+
+            document.getElementsByTagName("button")[3].addEventListener("click", function(){
+                const id = parseInt(prompt("Enter Employee ID to find: "));
+                const rec = findEmployee(id);
+                if(rec){
+                    alert(`Employee Found: ID: ${rec.id}, Name: ${rec.name}, Address: ${rec.address}, Salary: ${rec.salary}`);
+                } else {
+                    alert("Employee not found");
+                }
+            })  
+        })
+    let empCollection = [
+    {id : 1, name : "Phaniraj", address : "Bangalore", salary : 45000}
+];
+
+function addEmployee(emp){
+    empCollection = [...empCollection, emp];
+}
+
+function deleteEmployee(id){
+    empCollection = empCollection.filter(emp => emp.id !== id);
+}
+
+function updateEmployee(updatedEmp){
+    empCollection = empCollection.map(emp => emp.id === updatedEmp.id ? { ...emp, name : updatedEmp.name} : emp)
+}
+
+function findEmployee(id){
+    return empCollection.find(e =>e.id === id)
+}
+
+const getAllEmployees = () => [...empCollection];

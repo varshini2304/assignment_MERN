@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maps and Dictionaries</title>
+    <script>
+        function dictionaryExample() {
+            const dict = {
+                "apple": "A fruit that is red, yellow or green.",
+                "banana": "A fruit that is yellow.",
+                "orange": "A fruit that is orange.",
+                "mango": "A fruit that is yellow and tropical."
+            };
+
+            console.log("Dictionary Contents:");
+            for (const key in dict) {
+                console.log(`${key}: ${dict[key]}`);
+            }
+        }
+
+        function mapExample() {
+            const numbers = [1, 2, 3, 4, 5];
+            const squaredNumbers = numbers.map(value => value * value);
+            console.log("Squared Numbers:", squaredNumbers);
+            console.log("Original Numbers:", numbers);
+
+        }
+        function uppercaseStringsExample() {
+            const words = ["apple", "banana", "orange", "mango"];
+            const upperWords = words.map(word => word.toUpperCase());
+            console.log("Uppercase Words:", upperWords);
+        }
+
+        function employeesTableExample() {
+            const employees = [
+                { id: 1, name: "Alice", role: "Developer" },
+                { id: 2, name: "Bob", role: "Designer" },
+                { id: 3, name: "Charlie", role: "Tester" }
+            ];
+
+            const rows = employees.map(emp =>
+                `<tr><td>${emp.id}</td><td>${emp.name}</td><td>${emp.role}</td></tr>`
+            );
+
+            const tableHtml = `
+                <table border="1" cellpadding="6">
+                    <thead>
+                        <tr><th>ID</th><th>Name</th><th>Role</th></tr>
+                    </thead>
+                    <tbody>
+                        ${rows.join("")}
+                    </tbody>
+                </table>
+            `;
+
+            const container = document.getElementById("employeeTable");
+            container.innerHTML = tableHtml;
+        }
+
+        //dictionaryExample();
+        mapExample();
+        uppercaseStringsExample();
+        employeesTableExample();
+
+    </script>
+</head>
+
+<body>
+    <h1>Maps and Dictionaries in JavaScript</h1>
+    <p>
+        Dictionaries in JavaScript can be implemented using arrays with data of key-value pairs.
+        Map function is used to perform a common operation on each element of the array and return a new array with
+        modified data.
+    </p>
+    <div id="employeeTable"></div>
+
+</body>
+
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator App</title>
+</head>
+
+<body>
+    <h1>Simple Calculator</h1>
+    <p>Click the button to enter numbers and an operator. Result shows in an alert.</p>
+    <button id="calcBtn">Calculate</button>
+
+    <script>
+        const calcBtn = document.getElementById('calcBtn');
+
+        calcBtn.addEventListener('click', () => {
+            const first = prompt("Enter the first number:");
+            const second = prompt("Enter the second number:");
+            const operator = prompt("Enter operator (+, -, *, /):");
+
+            const num1 = Number(first);
+            const num2 = Number(second);
+
+            if (Number.isNaN(num1) || Number.isNaN(num2)) {
+                alert("Please enter valid numbers.");
+                return;
+            }
+
+            let result;
+            switch (operator) {
+                case '+':
+                    result = num1 + num2;
+                    break;
+                case '-':
+                    result = num1 - num2;
+                    break;
+                case '*':
+                    result = num1 * num2;
+                    break;
+                case '/':
+                    if (num2 === 0) {
+                        alert("Division by zero is not allowed.");
+                        return;
+                    }
+                    result = num1 / num2;
+                    break;
+                default:
+                    alert("Invalid operator. Use +, -, *, /.");
+                    return;
+            }
+
+            alert(`Result: ${num1} ${operator} ${num2} = ${result}`);
+        });
+    </script>
+</body>
+
+</html>

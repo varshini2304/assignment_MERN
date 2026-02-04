@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.7.1.min.js"></script>
+    <script src="../Javascript/DOMManipulation.js"></script>
+    <script>
+        const url = "http://localhost:3000/employees";
+        $(document).ready(function () {
+            $("section").hide(1000);
+            $("nav a").click(function (e) {
+                e.preventDefault();
+                const index = $(this).index();
+                $("section").eq(index).show(1000).siblings("section").hide(1000);
+                fillRecords();
+            });
+            $("#btnAdd").click(addRecord);
+
+
+            $("#btnUpdate").click(function () {
+                //extract all values from the edit text boxes
+                const id = $("#txtEditId").val();
+                const name = $("#txtEditName").val();
+                const address = $("#txtEditAddress").val();
+                const salary = $("#txtEditSalary").val();
+                const emp = {
+                    id: id,
+                    empName: name,
+                    empAddress: address,
+                    empSalary: salary
+                };
+                const temUrl = url + "/" + id;
+                $.ajax({
+                    url: temUrl,
+                    type: 'PUT',
+                    data: JSON.stringify(emp),
+                    contentType: 'application/json; charset=utf-8',
+                    success: function (data) {
+                        alert("Record updated successfully");
+                    },
+                    error: function (err) {
+                        alert("Error while updating record");
+                    }
+                });
+            });
+        });
+
+        function addRecord() {
+            const id = $("#txtId").val();
+            const name = $("#txtName").val();
+            const address = $("#txtAddress").val();
+            const salary = $("#txtSalary").val();
+            const emp = {
+                id: id,
+                empName: name,
+                empAddress: address,
+                empSalary: salary
+            };
+
+            $.post(url, JSON.stringify(emp), function (data) {
+                alert("Record added successfully");
+                $("#txtId").val('');
+                $("#txtName").val('');
+                $("#txtAddress").val('');
+                $("#txtSalary").val('');
+
+            });
+        }
+        function fillRecords() {
+            $.get(url, function (data) {
+                $("#tblRecords tr:gt(0)").remove(); //Clear existing records except the header
+                data.forEach(function (emp) {
+                    const row = `<tr>
+                                <td>${emp.id}</td>
+                                <td>${emp.empName}</td>
+                                <td>${emp.empAddress}</td>
+                                <td>${emp.empSalary}</td>
+                                <td>
+                                    <button class="btnEdit" onclick="editRecord(${emp.id})">Edit</button>
+                                    <button class="btnDelete" onclick="deleteRecord(${emp.id})">Delete</button>
+                                </td>
+                            </tr>`;
+                    $("#tblRecords").append(row);
+                })
+            });
+        }
+
+        function deleteRecord(id) {
+            const temUrl = url + "/" + id;
+            $.ajax({
+                url: temUrl,
+                type: 'DELETE',
+                success: function (data) {
+                    alert("Record deleted successfully");
+                },
+                error: function (err) {
+                    alert("Error while deleting record");
+                }
+            });
+        }
+        function editRecord(id) {
+            const temUrl = url + "/" + id;
+            $.get(temUrl, function (data) {
+                $("section").eq(2).show(1000).siblings("section").hide(1000);
+                $("#txtEditId").val(data.id);
+                $("#txtEditName").val(data.empName);
+                $("#txtEditAddress").val(data.empAddress);
+                $("#txtEditSalary").val(data.empSalary);
+            });
+        }
+
+    </script>
+</head>
+
+<body>
+    <h2>DOM Manipulation</h2>
+    <nav>
+        <a href="#">All Employees</a>
+        <a href="#">Add new</a>
+    </nav>
+    <hr>
+    <div>
+        <section>
+            <h2>List of Employees</h2>
+            <table id="tblRecords" border="1">
+                <tr>
+                    <th>Employee ID</th>
+                    <th>Employee Name</th>
+                    <th>Employee Address</th>
+                    <th>Employee Salary</th>
+                    <th>Options</th>
+                </tr>
+            </table>
+        </section>
+        <section>
+            <h2>Add a new Record</h2>
+            <hr>
+            <input type="number" placeholder="Enter the ID" id="txtId"><br>
+            <input type="text" placeholder="Enter the Name" id="txtName"><br>
+            <input type="text" placeholder="Enter the Address" id="txtAddress"><br>
+            <input type="number" placeholder="Enter the Salary" id="txtSalary"><br>
+            <button id="btnAdd">Add Record</button>
+        </section>
+        <section>
+            <h2>Update Record</h2>
+            <hr>
+            <input type="text" disabled placeholder="Enter the Id" id="txtEditId"><br>
+            <input type="text" placeholder="Enter the Name" id="txtEditName"><br>
+            <input type="text" placeholder="Enter the Address" id="txtEditAddress"><br>
+            <input type="number" placeholder="Enter the Salary" id="txtEditSalary"><br>
+            <button id="btnUpdate">Save changes</button>
+        </section>
+    </div>
+    <footer>
+        <p>All Rights Reserved-Nichi In-2026</p>
+    </footer>
+</body>
+
+</html>
