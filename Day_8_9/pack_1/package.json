@@ -1,0 +1,14 @@
+{
+  "name": "math-calculator",
+  "version": "1.0.0",
+  "description": "Math utility library with CLI calculator",
+  "type": "module",
+  "main": "calculatorConsumer.js",
+  "scripts": {
+    "start": "node calculatorConsumer.js",
+    "rotate": "node log_demo.js"
+  },
+  "dependencies": {
+    "prompt-sync": "^4.2.0"
+  }
+}
